@@ -1,5 +1,4 @@
 import { Database } from "../../db/supabase";
-import { Board } from "../../types/boards.types";
 import { BoardsDAO } from "../dao/boards.dao";
 
 const dbClient = Database.getInstance().getClient();

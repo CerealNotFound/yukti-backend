@@ -1,15 +1,18 @@
-export interface Board {
+export interface BoardWithAuthor {
   id: string;
   title: string;
   description: string;
   created_at: string;
   last_activity: string;
-  author: string;
-  who_can_see: "everyone" | "team" | "private";
+  who_can_see: 'everyone' | string; // You may want to make this more specific with allowed values
   labels: string[];
   is_starred: boolean;
-  status: "active" | "archived";
-  category?: string;
+  status: 'active' | string; // You may want to make this more specific with allowed values
+  category: string;
+  users: {
+    name: string;
+    email: string;
+  }[];
 }
 
 export interface CreateBoard {

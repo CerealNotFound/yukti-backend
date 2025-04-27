@@ -1,5 +1,9 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { CreateBoard, UpdateBoard } from "../../types/boards.types";
+import {
+  BoardWithAuthor,
+  CreateBoard,
+  UpdateBoard,
+} from "../../types/boards.types";
 
 interface DaoType {}
 
@@ -24,12 +28,14 @@ export class BoardsDAO implements DaoType {
     console.log(`[DAO] Method result: ${methodName}`, result);
   };
 
-  async getAllBoards() {
+  async getAllBoards(): Promise<BoardWithAuthor[]> {
     this.logMethodCall("getAllBoards");
     try {
       const { data, error } = await this.client
         .from("boards")
-        .select("*")
+        .select(
+          "id, title, description, created_at, last_activity, who_can_see, labels, is_starred, status, category, users(name, email)"
+        )
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -37,9 +43,14 @@ export class BoardsDAO implements DaoType {
       }
 
       this.logMethodResult("getAllBoards", data);
-      return data;
+      if (!data) {
+        this.throwError("No data found");
+      }
+
+      return data || [];
     } catch (error) {
       this.throwError(error);
+      return []; // This line will never execute but satisfies TypeScript
     }
   }
 
