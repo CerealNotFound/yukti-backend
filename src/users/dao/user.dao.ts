@@ -4,6 +4,7 @@ import { CreateUser, UpdateUser } from "../../types/user.types";
 interface DaoType {
   getAllUsers: () => Promise<any>;
   getUserById: (id: string) => Promise<any>;
+  getUserByAuthId: (authId: string) => Promise<any>;
   createUser: (user: CreateUser) => Promise<any>;
   updateUser: (id: string, user: UpdateUser) => Promise<any>;
   updateUserByEmail: (email: string, user: UpdateUser) => Promise<any>;
@@ -63,6 +64,26 @@ export class UserDAO implements DaoType {
       }
 
       this.logMethodResult("getUserById", data);
+      return data;
+    } catch (error) {
+      this.throwError(error);
+    }
+  }
+
+  async getUserByAuthId(authId: string) {
+    this.logMethodCall("getUserByAuthId", { authId });
+    try {
+      const { data, error } = await this.client
+        .from("users")
+        .select("*")
+        .eq("auth_id", authId)
+        .single();
+
+      if (error) {
+        this.throwError(error);
+      }
+
+      this.logMethodResult("getUserByAuthId", data);
       return data;
     } catch (error) {
       this.throwError(error);

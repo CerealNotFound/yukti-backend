@@ -74,7 +74,7 @@ export class BoardsDAO implements DaoType {
     }
   }
 
-  async createBoards(board: CreateBoard[]) {
+  async createBoard(board: CreateBoard) {
     this.logMethodCall("createBoard", { board });
     try {
       const { data, error } = await this.client

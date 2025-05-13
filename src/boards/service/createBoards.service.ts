@@ -5,7 +5,7 @@ import { BoardsDAO } from "../dao/boards.dao";
 const dbClient = Database.getInstance().getClient();
 const boardsDao = new BoardsDAO(dbClient);
 
-export const createBoardsService = async (boards: CreateBoard[]) => {
-  const createdBoards = await boardsDao.createBoards(boards);
-  return createdBoards;
+export const createBoardsService = async (board: CreateBoard) => {
+  const createdBoard = await boardsDao.createBoard(board);
+  return createdBoard;
 };
